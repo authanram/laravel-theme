@@ -1,7 +1,19 @@
 <?php
 
 return [
-    'stack' => [
+
+    'paths' => [
+
         resource_path('theme.yaml'),
+
+        resource_path('theme-custom.yaml'),
+
     ],
+
+    'replace' => [
+
+        '%accent%' => 'accent',
+
+    ],
+
 ];

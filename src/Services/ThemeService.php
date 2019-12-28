@@ -1,10 +1,13 @@
 <?php
 
-namespace Authanram\Theme;
+namespace Authanram\Theme\Services;
 
-class ThemeService
+use Authanram\Theme\Contracts\ThemeService as ThemeServiceContract;
+use Symfony\Component\Yaml\Yaml;
+
+class ThemeService implements ThemeServiceContract
 {
-    public static function getValue(): string
+    public function get(): string
     {
         $args = \func_get_args();
 
@@ -18,7 +21,7 @@ class ThemeService
 
             }
 
-            $value = config("authanram-resources.theme.$arg");
+            $value = config("authanram-theme.$arg");
 
             if (! \is_string($value)) {
 
@@ -33,23 +36,49 @@ class ThemeService
         return $cssClasses;
     }
 
-    public static function get(string $filePath): array
+    public function use(array $configuration): array
     {
-        $theme = Yaml::parseFile($filePath);
+        $result = [];
 
-        return static::prepare($theme);
+        foreach ($configuration['paths'] ?? [] as $path) {
+
+            if (! file_exists($path)) {
+
+                continue;
+
+            }
+
+            $current = $result;
+
+            $parsedFile = (array)Yaml::parseFile($path, Yaml::PARSE_OBJECT_FOR_MAP);
+
+            $result = array_merge($current, $parsedFile);
+
+        }
+
+        return static::prepare($result, $configuration['replace'] ?? []);
     }
 
-    private static function prepare(\stdClass $theme): array
+    private static function prepare(array $theme, array $replaces): array
     {
-        $accent = $theme->accent;
+        if (empty(\count($replaces))) {
+
+            return $theme;
+
+        }
 
         $json = \json_encode($theme, JSON_THROW_ON_ERROR, 512);
 
-        $preparedJson = \str_replace('%accent%', $accent, $json);
+        foreach ($replaces as $search => $key) {
 
-        $preparedTheme = \json_decode($preparedJson, true, 512, JSON_THROW_ON_ERROR);
+            $json = \str_replace($search, data_get($theme, $key), $json);
 
-        return (array)$preparedTheme;
+        }
+
+        $theme = \json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+
+        unset($theme['paths'], $theme['replace']);
+
+        return (array)$theme;
     }
 }
