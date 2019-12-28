@@ -1,0 +1,29 @@
+{
+    "name": "authanram/laravel-theme",
+    "license": "MIT",
+    "require": {
+        "php": "^7.4",
+        "laravel/framework": "^6.9",
+        "pragmarx/yaml": "0.3.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Authanram\\Theme\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Authanram\\Theme\\Providers\\ServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
