@@ -1,14 +1,12 @@
 <?php
 
-$authanramThemeService = app()->make(\Authanram\Theme\Contracts\ThemeService::class);
+use Authanram\Theme\Services\ThemeService;
 
 if (! function_exists('theme')) {
     function theme(): string
     {
-        global $authanramThemeService;
-
         $args = \func_get_args();
 
-        return trim($authanramThemeService->get(...$args));
+        return trim(ThemeService::get(...$args));
     }
 }

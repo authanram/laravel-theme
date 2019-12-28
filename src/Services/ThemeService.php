@@ -7,7 +7,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class ThemeService implements ThemeServiceContract
 {
-    public function get(): string
+    public static function get(): string
     {
         $args = \func_get_args();
 
@@ -36,7 +36,7 @@ class ThemeService implements ThemeServiceContract
         return $cssClasses;
     }
 
-    public function use(array $configuration): array
+    public static function make(array $configuration): array
     {
         $result = [];
 

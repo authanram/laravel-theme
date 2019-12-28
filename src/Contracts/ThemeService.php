@@ -4,7 +4,7 @@ namespace Authanram\Theme\Contracts;
 
 interface ThemeService
 {
-    public function get(): string;
+    public static function get(): string;
 
-    public function use(array $configuration): array;
+    public static function make(array $configuration): array;
 }

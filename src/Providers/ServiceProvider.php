@@ -30,7 +30,7 @@ class ServiceProvider extends IlluminateServiceProvider
     {
         $themeService = $this->app->make(Contracts\ThemeService::class);
 
-        $theme = $themeService->use(config('authanram-theme'));
+        $theme = $themeService::make(config('authanram-theme'));
 
         $this->mergeConfig($theme, 'authanram-theme');
     }
