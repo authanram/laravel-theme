@@ -1,0 +1,83 @@
+accent: orange
+
+breadcrumbs: p-4 pb-0 md:p-8 md:pb-0
+
+buttons:
+  accents:
+    default: my-1 focus:outline-none py-2 px-4 rounded w-full sm:w-auto
+    primary: bg-%accent%-500 focus:bg-%accent%-700 hover:bg-%accent%-600 border border-%accent%-500 text-white
+    secondary: bg-gray-500 focus:bg-gray-700 hover:bg-gray-600 border border-gray-500 text-white
+    tertiary:
+  directives: v-ripple
+
+card: bg-white overflow-hidden mb-4 sm:mb-6 md:mb-8 rounded-lg shadow-md
+
+container: null
+#container: m-auto md:w-3/4 xl:w-2/3
+
+content: null
+#content: pt-4 px-4 md:pt-6 md:px-8
+
+fields:
+  default:
+    output: flex-1
+  timestamp:
+    container: text-sm
+    time:
+      container: xl:inline hidden
+      value: text-gray-500
+
+flash:
+  caption: text-sm
+  message: font-light text-xl
+
+form:
+  fields:
+    container: flex flex-wrap md:pb-2
+    field:
+      container: w-full
+      error: block font-normal pt-2 md:pt-3 text-red-500 text-xs
+      input: appearance-none block bg-gray-100 focus:bg-gray-500 border border-gray-300 focus:border-gray-500 leading-tight focus:outline-none py-3 px-4 rounded text-gray-700 focus:text-white w-full
+  label:
+    container: block mb-6
+    text: block font-medium mb-2
+
+index:
+  list:
+    actions: flex justify-end mr-3 p-1 hover:text-blue-500 w-12
+    field: truncate py-4 pl-5 md:pl-6 lg:pl-8
+    header: bg-gray-100 flex font-medium items-center text-base
+    row: hover:bg-gray-100 border-t flex group items-center
+
+invokers:
+  container: group-hover:block
+  directives: v-ripple
+  default: cursor-pointer flex items-center justify-between px-4 py-3
+  accents:
+    danger: hover:bg-red-100 hover:text-red-700
+    default: hover:bg-gray-200 hover:text-blue-500
+    success: hover:bg-green-100 hover:text-green-600
+    warning: hover:bg-orange-100 hover:text-orange-600
+  icons:
+    default: icon-045
+    edit: icon-006
+    duplicate: icon-269
+    show: icon-021
+    publish: icon-055
+    unpublish: icon-057
+    destroy: icon-030
+
+link:
+  accent: text-%accent%-500
+  default: hover:underline
+  underline: underline
+
+padding: p-4 md:p-6 lg:p-8
+
+views:
+  invokers: resources.invokers
+  layout:
+    sections:
+      breadcrumbs: backend.breadcrumbs
+      content: backend.content
+    view: layouts.backend

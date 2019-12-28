@@ -4,7 +4,7 @@
     "require": {
         "php": "^7.4",
         "laravel/framework": "^6.9",
-        "pragmarx/yaml": "0.3.*"
+        "symfony/yaml": "5.0.*"
     },
     "autoload": {
         "psr-4": {
