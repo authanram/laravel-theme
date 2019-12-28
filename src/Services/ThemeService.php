@@ -23,6 +23,12 @@ class ThemeService implements ThemeServiceContract
 
             $value = config("authanram-theme.$arg");
 
+            if (\is_array($value)) {
+
+                $value = array_pop($value);
+
+            }
+
             if (! \is_string($value)) {
 
                 continue;
@@ -52,7 +58,7 @@ class ThemeService implements ThemeServiceContract
 
             $parsedFile = (array)Yaml::parseFile($path, Yaml::PARSE_OBJECT_FOR_MAP);
 
-            $result = array_merge($current, $parsedFile);
+            $result = array_merge_recursive($current, $parsedFile);
 
         }
 

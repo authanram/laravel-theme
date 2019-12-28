@@ -4,9 +4,9 @@ return [
 
     'paths' => [
 
-        resource_path('theme.yaml'),
+        resource_path('theme/theme.yaml'),
 
-        resource_path('theme-custom.yaml'),
+        resource_path('theme/theme-custom.yaml'),
 
     ],
 
