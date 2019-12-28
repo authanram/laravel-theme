@@ -9,7 +9,10 @@
     "autoload": {
         "psr-4": {
             "Authanram\\Theme\\": "src/"
-        }
+        },
+        "files": [
+            "./helpers.php"
+        ]
     },
     "extra": {
         "branch-alias": {
