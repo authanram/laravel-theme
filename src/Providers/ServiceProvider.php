@@ -28,6 +28,12 @@ class ServiceProvider extends IlluminateServiceProvider
 
     private function mergeThemeIntoConfiguration(): void
     {
+        if (empty(config('authanram-theme.paths'))) {
+
+            return;
+
+        }
+
         $themeService = $this->app->make(Contracts\ThemeService::class);
 
         $theme = $themeService::make(config('authanram-theme'));
