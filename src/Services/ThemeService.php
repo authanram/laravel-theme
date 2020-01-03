@@ -3,29 +3,64 @@
 namespace Authanram\Theme\Services;
 
 use Authanram\Theme\Contracts\ThemeService as ThemeServiceContract;
+use Authanram\Theme\Exceptions\ThemeException;
 use Symfony\Component\Yaml\Yaml;
 
 class ThemeService implements ThemeServiceContract
 {
-    public static function get(): string
+    public static function get($keys, $default = null, bool $throw = true): string
     {
-        $args = \func_get_args();
+        if (\is_string($keys)) {
+
+            $keys = [$keys];
+
+        }
 
         $cssClasses = '';
 
-        foreach ($args as $arg) {
+        $groupKey = '';
 
-            if (! \is_string($arg)) {
+        foreach ($keys as $key) {
+
+            if ($key === null) {
 
                 continue;
 
             }
 
-            $value = config("authanram-theme.$arg");
+            if (! \is_string($key)) {
+
+                throw new ThemeException("Expected string at theme path \"$key\".");
+
+            }
+
+            $keyOrigin = $key;
+
+            $key = !empty($groupKey) ? $groupKey . $key : $key;
+
+            $value = config("authanram-theme.$key");
+
+            if (!empty($groupKey) && !$value) {
+
+                $key = $keyOrigin;
+
+                $value = config("authanram-theme.$key");
+
+            }
 
             if (\is_array($value)) {
 
-                $value = array_pop($value);
+                $groupKey = $key . '.';
+
+                continue;
+
+            }
+
+            $value = static::makeDefaultValue($key, $value, $default);
+
+            if ($throw && $value === null) {
+
+                throw new ThemeException("Theme path \"$key\" has not been set.");
 
             }
 
@@ -35,11 +70,11 @@ class ThemeService implements ThemeServiceContract
 
             }
 
-            $cssClasses .= ' ' . $value;
+            $cssClasses .= " $value";
 
         }
 
-        return $cssClasses;
+        return trim($cssClasses);
     }
 
     public static function make(array $configuration): array
@@ -63,6 +98,21 @@ class ThemeService implements ThemeServiceContract
         }
 
         return static::prepare($result, $configuration['replace'] ?? []);
+    }
+
+    private static function makeDefaultValue(string $key, ?string $value, $default): ?string
+    {
+        if (!empty($value)) {
+
+            return $value;
+
+        }
+
+        return \is_array($default)
+
+            ? config("authanram-theme.$default[$key]", $default[$key])
+
+            : config("authanram-theme.$default", $default);
     }
 
     private static function prepare(array $theme, array $replaces): array

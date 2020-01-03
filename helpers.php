@@ -3,10 +3,8 @@
 use Authanram\Theme\Services\ThemeService;
 
 if (! function_exists('theme')) {
-    function theme(): string
+    function theme($keys, $default = null, bool $throw = true): string
     {
-        $args = \func_get_args();
-
-        return trim(ThemeService::get(...$args));
+        return trim(ThemeService::get($keys, $default, $throw));
     }
 }
