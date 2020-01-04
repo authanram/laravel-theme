@@ -4,6 +4,7 @@ namespace Authanram\Theme\Services;
 
 use Authanram\Theme\Contracts\ThemeService as ThemeServiceContract;
 use Authanram\Theme\Exceptions\ThemeException;
+use Illuminate\Support\Facades\File;
 use Symfony\Component\Yaml\Yaml;
 
 class ThemeService implements ThemeServiceContract
@@ -79,9 +80,37 @@ class ThemeService implements ThemeServiceContract
 
     public static function make(array $configuration): array
     {
+        $files = [];
+
+        foreach (data_get($configuration, 'paths') ?? [] as $path) {
+
+            if (File::isDirectory($path)) {
+
+                $fn = fn (\SplFileInfo $file) => $file->getPathname();
+
+                $paths = collect(File::allFiles($path))->map($fn)->toArray();
+
+                $current = $files;
+
+                $files = array_merge($current, $paths);
+
+            } else {
+
+                $files[] = $path;
+
+            }
+        }
+
+        $merged = static::merge($files);
+
+        return static::prepare($merged, data_get($configuration, 'replace'));
+    }
+
+    private static function merge(array $files): array
+    {
         $result = [];
 
-        foreach ($configuration['paths'] ?? [] as $path) {
+        foreach ($files as $path) {
 
             if (! file_exists($path)) {
 
@@ -97,7 +126,7 @@ class ThemeService implements ThemeServiceContract
 
         }
 
-        return static::prepare($result, $configuration['replace'] ?? []);
+        return $result;
     }
 
     private static function makeDefaultValue(string $key, ?string $value, $default): ?string
