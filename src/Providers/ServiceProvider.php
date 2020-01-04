@@ -14,6 +14,12 @@ class ServiceProvider extends IlluminateServiceProvider
 
         $this->mergeConfigFrom(__DIR__ . '/../../config.php', 'authanram-theme');
 
+        if ($this->app->runningInConsole()) {
+
+            return;
+
+        }
+
         $this->mergeThemeIntoConfiguration();
     }
 
