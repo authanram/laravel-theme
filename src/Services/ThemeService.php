@@ -4,6 +4,7 @@ namespace Authanram\Theme\Services;
 
 use Authanram\Theme\Contracts\ThemeService as ThemeServiceContract;
 use Authanram\Theme\Exceptions\ThemeException;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Yaml\Yaml;
 
@@ -46,6 +47,12 @@ class ThemeService implements ThemeServiceContract
                 $key = $keyOrigin;
 
                 $value = config("authanram-theme.$key");
+
+            }
+
+            if (\is_array($value) && !Arr::isAssoc($value)) {
+
+                $value = array_pop($value);
 
             }
 
